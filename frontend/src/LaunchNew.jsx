@@ -8,9 +8,12 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5000/api/AdminProduct";
 
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
+
 // Fetch products
 const fetchProducts = async () => {
-  const res = await fetch(`${API_URL}/AdminGetProduct`);
+  const res = await fetch(`${VITE_BACKEND_URL}api/AdminProduct/AdminGetProduct`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message);
   return data;
@@ -26,7 +29,7 @@ export const LaunchNew = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/me", { withCredentials: true })
+      .get(`${VITE_BACKEND_URL}api/me`, { withCredentials: true })
       .then((res) => setUser(res.data))
       .catch((err) => console.error("Failed to fetch user", err));
   }, []);
@@ -42,7 +45,7 @@ export const LaunchNew = () => {
     queryKey: ["cartItems"],
     queryFn: async () => {
       const res = await axios.get(
-        "http://localhost:5000/api/MyCartProduct/getMyCart",
+        `${VITE_BACKEND_URL}api/MyCartProduct/getMyCart`,
         { withCredentials: true }
       );
       return res.data;
@@ -54,7 +57,7 @@ export const LaunchNew = () => {
     queryKey: ["favourites"],
     queryFn: async () => {
       const res = await axios.get(
-        "http://localhost:5000/api/favourites/myfavourites",
+        `${VITE_BACKEND_URL}api/favourites/myfavourites`,
         { withCredentials: true }
       );
       return res.data;
@@ -67,7 +70,7 @@ export const LaunchNew = () => {
   // Add to cart mutation
   const addCartProduct = useMutation({
     mutationFn: (data) =>
-      axios.post("http://localhost:5000/api/MyCartProduct/addMyCart", data, {
+      axios.post(`${VITE_BACKEND_URL}api/MyCartProduct/addMyCart`, data, {
         withCredentials: true,
       }),
     onSuccess: () => {
@@ -79,7 +82,7 @@ export const LaunchNew = () => {
   const addFavourite = useMutation({
     mutationFn: (productId) =>
       axios.post(
-        "http://localhost:5000/api/favourites/add",
+        `${VITE_BACKEND_URL}api/favourites/add`,
         { productId },
         { withCredentials: true }
       ),
@@ -100,7 +103,7 @@ export const LaunchNew = () => {
   const removeFavourite = useMutation({
     mutationFn: (productId) =>
       axios.delete(
-        `http://localhost:5000/api/favourites/remove/${productId}`,
+        `${VITE_BACKEND_URL}api/favourites/remove/${productId}`,
         { withCredentials: true }
       ),
     onSuccess: () => {
