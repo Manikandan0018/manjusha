@@ -101,7 +101,7 @@ const OrderTracker = ({ currentStatus, history }) => {
 
 
 
-const API_URL = "http://localhost:5000/api/AdminProduct";
+const API_URL = `${VITE_BACKEND_URL}api/AdminProduct`;
 
 const fetchProducts = async () => {
   const res = await fetch(`${API_URL}/AdminGetProduct`);
@@ -133,7 +133,7 @@ export const OrderTracking = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/myOrders", { withCredentials: true })
+      .get(`${VITE_BACKEND_URL}api/myOrders`, { withCredentials: true })
       .then((res) => {
         setOrders(res.data);
         setLoading(false);
@@ -148,7 +148,7 @@ export const OrderTracking = () => {
     queryKey: ["cartItems"],
     queryFn: async () => {
       const res = await axios.get(
-        "http://localhost:5000/api/MyCartProduct/getMyCart",
+        `${VITE_BACKEND_URL}api/MyCartProduct/getMyCart`,
         { withCredentials: true }
       );
       return res.data;
@@ -158,7 +158,7 @@ export const OrderTracking = () => {
   const logout = async () => {
     try {
       await axios.post(
-        "http://localhost:5000/api/logout",
+        `${VITE_BACKEND_URL}api/logout`,
         {},
         { withCredentials: true }
       );
