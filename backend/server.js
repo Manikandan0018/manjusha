@@ -3,18 +3,15 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import fileUpload from "express-fileupload";
-import cookieParser from "cookie-parser"; // ✅ added
+import cookieParser from "cookie-parser";
 import { v2 as cloudinary } from "cloudinary";
-
 import bodyParser from "body-parser";
-import emailRoutes from "./routes/Email.js";
-
-import deliveryRoutes from "./routes/pinAdressDelivery.js";
-import favouriteRoutes from "./routes/Favourite.js";
-
-import AdminDashboard from "./routes/AdminDashboard.js";
 
 // ✅ Route imports
+import emailRoutes from "./routes/Email.js";
+import deliveryRoutes from "./routes/pinAdressDelivery.js";
+import favouriteRoutes from "./routes/Favourite.js";
+import AdminDashboard from "./routes/AdminDashboard.js";
 import AdminProductRoute from "./routes/AdminProductRoute.js";
 import AdminMenProductRoute from "./routes/AdminMensRoute.js";
 import AdminWomenProductRoute from "./routes/AdminWomenRoute.js";
@@ -23,38 +20,29 @@ import CartProduct from "./routes/AddCartRoute.js";
 import SignUp from "./routes/SignUp.js";
 import MyCartProduct from "./routes/MyCartRoute.js";
 import Profile from "./routes/Profile.js";
-import  OrderTracking  from "./routes/OrderRoute.js";
+import OrderTracking from "./routes/OrderRoute.js";
+
 dotenv.config();
 
 const app = express();
 
-// ✅ Use middleware in correct order
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // allow server-to-server requests
+// ✅ CORS setup (allow Vercel + localhost)
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://manjusha-bsrarz2eq-manikandan0018s-projects.vercel.app",
+    ],
+    credentials: true,
+  })
+);
 
-    const allowedOrigins = [
-      'http://localhost:5173',
-      /\.vercel\.app$/
-    ];
-
-    if (allowedOrigins.some(o => typeof o === 'string' ? o === origin : o.test(origin))) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
-}));
-
-app.use(cookieParser()); // ✅ must come before protect()
+// ✅ Middleware
+app.use(cookieParser());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(fileUpload({ useTempFiles: true }));
-
 app.use(bodyParser.json());
-
-
 
 // ✅ Cloudinary config
 cloudinary.config({
@@ -88,6 +76,9 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("✅ MongoDB connected");
-    app.listen(5000, () => console.log("🚀 Server running at http://localhost:5000"));
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () =>
+      console.log(`🚀 Server running at http://localhost:${PORT}`)
+    );
   })
   .catch((err) => console.error("❌ MongoDB connection failed:", err));
