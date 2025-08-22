@@ -130,7 +130,7 @@ export const Home = () => {
 
           <button
             onClick={() => {
-              navigate("/support");
+              navigate("/email");
               toggleSidebar();
             }}
             className="text-left text-rose-600"
