@@ -155,6 +155,14 @@ export const Home = () => {
           >
             Settings
           </button>
+          <div>
+            <p
+              onClick={() => navigate("/AdminProduct")}
+              className="cursor-pointer text-rose-600 hover:underline hidden lg:block"
+            >
+              Admin
+            </p>
+          </div>
           <button
             onClick={toggleSidebar}
             className="text-left text-rose-400 mt-4"
@@ -316,14 +324,7 @@ export const Home = () => {
             >
               Settings
             </button>
-            <div>
-            <p
-              onClick={() => navigate("/AdminProduct")}
-              className="cursor-pointer text-rose-600 hover:underline hidden lg:block"
-            >
-              Admin
-            </p>
-          </div>
+           
           </div>
         </div>
       </div>
