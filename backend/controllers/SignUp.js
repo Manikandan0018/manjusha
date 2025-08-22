@@ -58,12 +58,13 @@ export const login = async (req, res) => {
       expiresIn: '7d',
     });
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      sameSite: 'Lax',
-      secure: false,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+   res.cookie("token", token, {
+  httpOnly: true,
+  sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+  secure: process.env.NODE_ENV === "production", // true only in prod
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+});
+
 
     console.log("✅ Login successful. Token generated and cookie set.");
     res.status(200).json({ message: 'Login successful' });
