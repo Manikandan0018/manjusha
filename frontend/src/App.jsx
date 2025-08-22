@@ -27,7 +27,7 @@ import { AdminDashboard } from './AdminDashboard/AdminDashboard.jsx';
 function App() {
   return (
 
-      <Routes basename="/manjusha">
+      <Routes basename="/">
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/address" element={<Address />} />
