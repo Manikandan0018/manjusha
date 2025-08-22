@@ -116,38 +116,28 @@ export default function AdminProduct() {
 
   return (
     <div className="p-6 max-w-3xl mx-auto bg-white shadow-xl rounded-lg">
-      <div className="flex space-x-5">
-        <h1
-          onClick={handleAddToMen}
-          className="text-blue-500 hover:text-blue-800 cursor-pointer"
+   <div className="w-full bg-white shadow-sm border-b">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 py-3">
+      {[
+        { label: "Add Men Product", action: handleAddToMen },
+        { label: "Add Women Product", action: handleAddToWomen },
+        { label: "Add Child Product", action: handleAddToChild },
+        { label: "Admin Dashboard", action: AdminDashboard },
+        { label: "Admin Orders Update", action: AdminOrder },
+      ].map((item, index) => (
+        <button
+          key={index}
+          onClick={item.action}
+          className="text-sm font-medium text-gray-700 hover:text-white hover:bg-blue-600 px-3 py-1.5 rounded-lg transition duration-200"
         >
-          Add Men product |
-        </h1>
-        <h1
-          onClick={handleAddToWomen}
-          className="text-blue-500 hover:text-blue-800 cursor-pointer"
-        >
-          Add women product |
-        </h1>
-        <h1
-          onClick={handleAddToChild}
-          className="text-blue-500 hover:text-blue-800 cursor-pointer"
-        >
-          Add child product |
-        </h1>
-        <h1
-          onClick={AdminDashboard}
-          className="text-blue-500 hover:text-blue-800 cursor-pointer"
-        >
-          AdminDashboard |
-        </h1>
-        <h1
-          onClick={AdminOrder}
-          className="text-blue-500 hover:text-blue-800 cursor-pointer"
-        >
-          Admin Orders Update |
-        </h1>
-      </div>
+          {item.label}
+        </button>
+      ))}
+    </div>
+  </div>
+</div>
+
       <h1 className="text-2xl font-bold mb-4">
         {editingProduct ? "Edit Product" : "Add All New Product"}
       </h1>
