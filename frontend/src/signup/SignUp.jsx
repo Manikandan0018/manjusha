@@ -4,6 +4,9 @@ import { FaFacebookF } from "react-icons/fa";
 import axios from "axios";
 import logo from "../eLogo.png";
 
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
+
 export default function Signup() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
@@ -28,7 +31,7 @@ export default function Signup() {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/signup", form);
+      const res = await axios.post(`${VITE_BACKEND_URL}api/signup`, form);
       console.log(res.data);
       navigate("/login"); // Redirect to login after success
     } catch (err) {

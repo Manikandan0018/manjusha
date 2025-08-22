@@ -2,7 +2,10 @@ import { useState, useRef } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from 'axios';
 
-const API_URL = "http://localhost:5000/api/AdminMenProduct";
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
+
+const API_URL = `${VITE_BACKEND_URL}api/AdminMenProduct`;
 
 
 
@@ -107,7 +110,7 @@ export default function AdminMenProduct() {
   const { data: cartItems = [] } = useQuery({
   queryKey: ["cart"],
   queryFn: async () =>
-    (await axios.get("http://localhost:5000/api/CartProductGet", {
+    (await axios.get(`${VITE_BACKEND_URL}api/CartProductGet`, {
       withCredentials: true,
     })).data,
 });

@@ -11,9 +11,12 @@ import logo from "./eLogo.png";
 import banner from "./c1.jpg";
 import ban1 from "./ban1.png";
 
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
+
 // === Fetch user info from backend ===
 const fetchUser = async () => {
-  const res = await axios.get("http://localhost:5000/api/me", {
+  const res = await axios.get(`${VITE_BACKEND_URL}api/me`, {
     withCredentials: true,
   });
   return res.data;
@@ -36,7 +39,7 @@ export const Home = () => {
   } = useQuery({
     queryKey: ["cartItems"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:5000/api/MyCartProduct/getMyCart", {
+      const res = await axios.get(`${VITE_BACKEND_URL}api/MyCartProduct/getMyCart`, {
         withCredentials: true,
       });
       return res.data;
@@ -48,7 +51,7 @@ export const Home = () => {
   const logout = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/logout",
+        `${VITE_BACKEND_URL}api/logout`,
         {},
         { withCredentials: true }
       );

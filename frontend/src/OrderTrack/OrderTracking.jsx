@@ -7,8 +7,11 @@ import { motion } from "framer-motion";
 import logo from "../eLogo.png";
 import { Truck } from "lucide-react";  // modern delivery icon
 
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
+
 const fetchUser = async () => {
-  const res = await axios.get("http://localhost:5000/api/me", {
+  const res = await axios.get(`${VITE_BACKEND_URL}api/me`, {
     withCredentials: true,
   });
   return res.data;

@@ -1,7 +1,12 @@
 import { useState, useRef } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const API_URL = "http://localhost:5000/api/AdminChildProduct";
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
+
+const API_URL = `${VITE_BACKEND_URL}api/AdminChildProduct`;
+
+ // just to confirm
 
 const fetchProducts = async () => {
   const res = await fetch(`${API_URL}/AdminChildProductGet`);

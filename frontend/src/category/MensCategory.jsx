@@ -10,6 +10,9 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
+
 // Images
 import men1 from "../menImageCategory/menAnotherCarousal1.jpg";
 import men2 from "../menImageCategory/menCarousal3.jpg";
@@ -48,7 +51,7 @@ const mensProducts = [
   { id: 4, name: "Sporty Hoodie", price: "₹1,299", image: men4 },
 ];
 
-const API_URL = "http://localhost:5000/api/AdminMenProduct";
+const API_URL = `${VITE_BACKEND_URL}api/AdminMenProduct`;
 
 export const MensCategory = () => {
   const navigate = useNavigate();
@@ -71,7 +74,7 @@ export const MensCategory = () => {
   const { data: cartItems = [] } = useQuery({
     queryKey: ["cartItems"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:5000/api/MyCartProduct/getMyCart", {
+      const res = await axios.get(`${VITE_BACKEND_URL}api/MyCartProduct/getMyCart`, {
         withCredentials: true,
       });
       return res.data;
@@ -81,7 +84,7 @@ export const MensCategory = () => {
   // Mutation for add to cart
   const addCartProduct = useMutation({
     mutationFn: (data) =>
-      axios.post("http://localhost:5000/api/MyCartProduct/addMyCart", data, {
+      axios.post(`${VITE_BACKEND_URL}api/MyCartProduct/addMyCart`, data, {
         withCredentials: true,
       }),
     onSuccess: () => {

@@ -3,6 +3,9 @@ import axios from "axios";
 import { PaymentOption } from "../PaymentOption";
 import { FaUserEdit, FaPrint, FaSave, FaTimes } from "react-icons/fa";
 
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
+
 export const Address = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -22,7 +25,7 @@ export const Address = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/me", { withCredentials: true })
+      .get(`${VITE_BACKEND_URL}api/me`, { withCredentials: true })
       .then((res) => {
         setUser(res.data);
         setFormData({
@@ -59,7 +62,7 @@ export const Address = () => {
     e.preventDefault();
     try {
       const res = await axios.put(
-        "http://localhost:5000/api/profile/update",
+        `${VITE_BACKEND_URL}api/profile/update`,
         {
           fullName: formData.name,
           email: formData.email,

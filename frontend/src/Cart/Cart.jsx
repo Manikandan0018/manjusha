@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
+
 export const Cart = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -15,7 +18,7 @@ export const Cart = () => {
     queryKey: ["cartItems"],
     queryFn: async () => {
       const res = await axios.get(
-        "http://localhost:5000/api/MyCartProduct/getMyCart",
+        `${VITE_BACKEND_URL}api/MyCartProduct/getMyCart`,
         { withCredentials: true }
       );
       return res.data;
@@ -43,7 +46,7 @@ export const Cart = () => {
 
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/delivery/expected-delivery/${String(zip).trim()}`
+          `${VITE_BACKEND_URL}api/delivery/expected-delivery/${String(zip).trim()}`
         );
         setDeliveryEstimates((prev) => ({
           ...prev,
@@ -64,7 +67,7 @@ export const Cart = () => {
   const updateQuantity = useMutation({
     mutationFn: async ({ id, quantity }) => {
       const res = await axios.put(
-        `http://localhost:5000/api/MyCartProduct/updateQuantity/${id}`,
+        `${VITE_BACKEND_URL}api/MyCartProduct/updateQuantity/${id}`,
         { quantity },
         { withCredentials: true }
       );

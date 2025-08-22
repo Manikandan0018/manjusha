@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
+
 export const FavoritesPage = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -13,7 +16,7 @@ export const FavoritesPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/me", { withCredentials: true })
+      .get(`${VITE_BACKEND_URL}api/me`, { withCredentials: true })
       .then((res) => setUser(res.data))
       .catch((err) => console.error("Failed to fetch user", err));
   }, []);
@@ -23,7 +26,7 @@ export const FavoritesPage = () => {
     queryKey: ["favourites"],
     queryFn: async () => {
       const res = await axios.get(
-        "http://localhost:5000/api/favourites/myfavourites",
+        `${VITE_BACKEND_URL}api/favourites/myfavourites`,
         { withCredentials: true }
       );
       return res.data;
@@ -34,7 +37,7 @@ export const FavoritesPage = () => {
   const { data: cartItems = [] } = useQuery({
     queryKey: ["cartItems"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:5000/api/MyCartProduct/mycart", {
+      const res = await axios.get(`${VITE_BACKEND_URL}api/MyCartProduct/mycart`, {
         withCredentials: true,
       });
       return res.data;
@@ -45,7 +48,7 @@ export const FavoritesPage = () => {
   const removeFavouriteMutation = useMutation({
     mutationFn: async (productId) => {
       await axios.delete(
-        `http://localhost:5000/api/favourites/remove/${productId}`,
+        `${VITE_BACKEND_URL}api/favourites/remove/${productId}`,
         { withCredentials: true }
       );
     },
@@ -58,7 +61,7 @@ export const FavoritesPage = () => {
   const addCartProduct = useMutation({
     mutationFn: async (payload) => {
       const res = await axios.post(
-        "http://localhost:5000/api/MyCartProduct/addMyCart",
+        `${VITE_BACKEND_URL}api/MyCartProduct/addMyCart`,
         payload,
         { withCredentials: true }
       );

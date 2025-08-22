@@ -2,6 +2,9 @@ import { useState } from "react";
 import axios from "axios";
 import { Mail, User, MessageSquare } from "lucide-react";
 
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
+
 export default function Email() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("");
@@ -15,7 +18,7 @@ export default function Email() {
     setStatus("Sending...");
 
     try {
-      await axios.post("http://localhost:5000/api/email/sendEmail", form);
+      await axios.post(`${VITE_BACKEND_URL}api/email/sendEmail`, form);
       setStatus("✅ Message sent successfully!");
       setForm({ name: "", email: "", message: "" });
     } catch (error) {

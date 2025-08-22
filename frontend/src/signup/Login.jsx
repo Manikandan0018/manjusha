@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { FaEye, FaFacebookF } from 'react-icons/fa';
 import axios from 'axios';
 
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
+
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({ email: '', password: '' });
@@ -19,7 +22,7 @@ export default function Login() {
 
     try {
       const res = await axios.post(
-        'http://localhost:5000/api/login',
+        `${VITE_BACKEND_URL}api/login`,
         form,
         { withCredentials: true } // Important for httpOnly cookie
       );

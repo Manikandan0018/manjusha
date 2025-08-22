@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
+
 export const PaymentOption = () => {
   const [orderConfirmed, setOrderConfirmed] = useState(false);
   const [cartItems, setCartItems] = useState([]);
@@ -11,7 +14,7 @@ export const PaymentOption = () => {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/MyCartProduct/getMyCart", {
+        const res = await axios.get(`${VITE_BACKEND_URL}api/MyCartProduct/getMyCart`, {
           withCredentials: true,
         });
         setCartItems(res.data);
@@ -26,7 +29,7 @@ export const PaymentOption = () => {
   const handleProceed = async () => {
     try {
       await axios.post(
-        "http://localhost:5000/api/createOrder",
+        `${VITE_BACKEND_URL}api/createOrder`,
         { items: cartItems }, // Only send items, backend gets user from session
         { withCredentials: true }
       );
