@@ -11,15 +11,24 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
+
+
 export const AdminDashboard = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["adminStats"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:5000/api/admin/stats", {
-        withCredentials: true,
-      });
-      return res.data;
+  const token = localStorage.getItem("token");
+  const res = await axios.get(`${VITE_BACKEND_URL}api/admin/stats`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
+  });
+  return res.data;
+}
+
   });
 
   if (isLoading) return <p className="text-center">Loading dashboard...</p>;
