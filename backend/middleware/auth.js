@@ -5,7 +5,16 @@ import asyncHandler from "express-async-handler";
 
 // Protect middleware (check login + JWT)
 export const protect = asyncHandler(async (req, res, next) => {
-  const token = req.cookies.token;
+  let token;
+
+  if (req.cookies.token) {
+    token = req.cookies.token;
+  } else if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  }
 
   if (!token) {
     res.status(401);
@@ -21,5 +30,3 @@ export const protect = asyncHandler(async (req, res, next) => {
     throw new Error("Not authorized, token failed");
   }
 });
-
-
