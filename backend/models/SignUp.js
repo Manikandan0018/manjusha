@@ -1,34 +1,40 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
-const userSchema = new mongoose.Schema({
-  fullName: {
-    type: String,
-    required: true,
+const userSchema = new mongoose.Schema(
+  {
+    fullName: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    shippingAddress: {
+      address: { type: String, default: "" },
+      city: { type: String, default: "" },
+      state: { type: String, default: "" },
+      zip: { type: String, default: "" },
+      country: { type: String, default: "" },
+    },
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-    trim: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  shippingAddress: {
-    address: { type: String, default: "" },
-    city: { type: String, default: "" },
-    state: { type: String, default: "" },
-    zip: { type: String, default: "" },
-    country: { type: String, default: "" },
-  },
-}, { collection: 'signups' });
+  { 
+    collection: "signups",
+    timestamps: true   // ✅ automatically adds createdAt & updatedAt
+  }
+);
 
 // Password hashing before save
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
   next();
