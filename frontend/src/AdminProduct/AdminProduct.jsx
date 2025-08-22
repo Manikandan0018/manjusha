@@ -4,8 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 const API_URL = "http://localhost:5000/api/AdminProduct";
 
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
+
+
 const fetchProducts = async () => {
-  const res = await fetch(`${API_URL}/AdminGetProduct`);
+  const res = await fetch(`${VITE_BACKEND_URL}api/AdminProduct/AdminGetProduct`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message);
   return data;
@@ -33,8 +37,8 @@ export default function AdminProduct() {
   const mutation = useMutation({
     mutationFn: async ({ formData, isEdit, id }) => {
       const url = isEdit
-        ? `${API_URL}/AdminUpdateProduct/${id}`
-        : `${API_URL}/AdminCreateProduct`;
+        ? `${VITE_BACKEND_URL}api/AdminProduct/AdminUpdateProduct/${id}`
+        : `${VITE_BACKEND_URL}api/AdminProduct/AdminCreateProduct`;
 
       const method = isEdit ? "PUT" : "POST";
 
@@ -55,7 +59,7 @@ export default function AdminProduct() {
 
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
-      const res = await fetch(`${API_URL}/AdminDeleteProduct/${id}`, {
+      const res = await fetch(`${VITE_BACKEND_URL}api/AdminProduct/AdminDeleteProduct/${id}`, {
         method: "DELETE",
       });
       const json = await res.json();
