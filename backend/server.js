@@ -78,7 +78,10 @@ app.use("/api/delivery", deliveryRoutes);
 app.use("/api/favourites", favouriteRoutes);
 app.use("/api/admin", AdminDashboard);
 
-
+// ✅ Root route
+app.get("/", (req, res) => {
+  res.send("✅ Backend is running on Render!");
+});
 
 // ✅ Connect DB & start server
 mongoose
