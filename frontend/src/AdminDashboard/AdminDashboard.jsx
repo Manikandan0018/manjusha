@@ -11,28 +11,32 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-
 const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
-
 
 export const AdminDashboard = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["adminStats"],
     queryFn: async () => {
-  const token = localStorage.getItem("token");
-  const res = await axios.get(`${VITE_BACKEND_URL}api/admin/stats`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
+      // ✅ Send cookies along with request
+      const res = await axios.get(`${VITE_BACKEND_URL}api/admin/stats`, {
+        withCredentials: true,
+      });
+      return res.data;
     },
   });
-  return res.data;
-}
 
-  });
+  if (isLoading) {
+    return <p className="text-center">Loading dashboard...</p>;
+  }
 
-  if (isLoading) return <p className="text-center">Loading dashboard...</p>;
-  if (error) return <p className="text-center text-red-500">Error loading dashboard</p>;
+  if (error) {
+    return (
+      <p className="text-center text-red-500">
+        Error loading dashboard: {error.message}
+      </p>
+    );
+  }
 
   const chartData = [
     { name: "Weekly Orders", value: data?.weeklyOrders || 0 },
@@ -51,10 +55,18 @@ export const AdminDashboard = () => {
           <CardContent>
             <h3 className="text-xl font-semibold mb-4">Overview</h3>
             <ul className="space-y-2 text-gray-700">
-              <li>🛒 Weekly Orders: <b>{data?.weeklyOrders || 0}</b></li>
-              <li>🛒 Monthly Orders: <b>{data?.monthlyOrders || 0}</b></li>
-              <li>👥 Weekly Users: <b>{data?.weeklyUsers || 0}</b></li>
-              <li>👥 Monthly Users: <b>{data?.monthlyUsers || 0}</b></li>
+              <li>
+                🛒 Weekly Orders: <b>{data?.weeklyOrders || 0}</b>
+              </li>
+              <li>
+                🛒 Monthly Orders: <b>{data?.monthlyOrders || 0}</b>
+              </li>
+              <li>
+                👥 Weekly Users: <b>{data?.weeklyUsers || 0}</b>
+              </li>
+              <li>
+                👥 Monthly Users: <b>{data?.monthlyUsers || 0}</b>
+              </li>
             </ul>
           </CardContent>
         </Card>
