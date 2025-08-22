@@ -29,10 +29,22 @@ const app = express();
 // ✅ Correct CORS setup
 app.use(
   cors({
-    origin: [ "http://localhost:5173", /\.vercel\.app$/ ],
-    credentials: true, // allow cookies
+    origin: (origin, callback) => {
+      // allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true);
+
+      if (
+        origin === "http://localhost:5173" ||
+        /\.vercel\.app$/.test(origin)   // ✅ regex check
+      ) {
+        return callback(null, true);
+      }
+      callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
   })
 );
+
 
 // ✅ Middleware
 app.use(cookieParser());
