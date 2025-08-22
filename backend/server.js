@@ -3,15 +3,18 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import fileUpload from "express-fileupload";
-import cookieParser from "cookie-parser";
+import cookieParser from "cookie-parser"; // ✅ added
 import { v2 as cloudinary } from "cloudinary";
-import bodyParser from "body-parser";
 
-// ✅ Route imports
+import bodyParser from "body-parser";
 import emailRoutes from "./routes/Email.js";
+
 import deliveryRoutes from "./routes/pinAdressDelivery.js";
 import favouriteRoutes from "./routes/Favourite.js";
+
 import AdminDashboard from "./routes/AdminDashboard.js";
+
+// ✅ Route imports
 import AdminProductRoute from "./routes/AdminProductRoute.js";
 import AdminMenProductRoute from "./routes/AdminMensRoute.js";
 import AdminWomenProductRoute from "./routes/AdminWomenRoute.js";
@@ -20,29 +23,31 @@ import CartProduct from "./routes/AddCartRoute.js";
 import SignUp from "./routes/SignUp.js";
 import MyCartProduct from "./routes/MyCartRoute.js";
 import Profile from "./routes/Profile.js";
-import OrderTracking from "./routes/OrderRoute.js";
-
+import  OrderTracking  from "./routes/OrderRoute.js";
 dotenv.config();
 
 const app = express();
 
-// ✅ CORS setup (allow Vercel + localhost)
+// ✅ Use middleware in correct order
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://manjusha-bsrarz2eq-manikandan0018s-projects.vercel.app",
+            /\.vercel\.app$/
     ],
     credentials: true,
   })
 );
 
-// ✅ Middleware
-app.use(cookieParser());
+
+app.use(cookieParser()); // ✅ must come before protect()
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(fileUpload({ useTempFiles: true }));
+
 app.use(bodyParser.json());
+
+
 
 // ✅ Cloudinary config
 cloudinary.config({
@@ -76,9 +81,6 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("✅ MongoDB connected");
-    const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () =>
-      console.log(`🚀 Server running at http://localhost:${PORT}`)
-    );
+    app.listen(5000, () => console.log("🚀 Server running at http://localhost:5000"));
   })
   .catch((err) => console.error("❌ MongoDB connection failed:", err));
