@@ -34,49 +34,39 @@ export const signup = async (req, res) => {
 };
 
 // POST /api/login
-export const login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
+export const login = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
 
-    // 1️⃣ Find user in DB
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid email or password' });
-    }
+  // ✅ Admin Login (from .env)
+  if (
+    email === process.env.ADMIN_EMAIL &&
+    password === process.env.ADMIN_PASSWORD
+  ) {
+    const token = jwt.sign(
+      { email, isAdmin: true }, // 👈 include isAdmin flag
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
 
-    // 2️⃣ Check password
-    const isMatch = await user.matchPassword(password);
-    if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid email or password' });
-    }
-
-    // 3️⃣ Create JWT token
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '7d' });
-
-    // 4️⃣ Set httpOnly cookie
-    res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
-
-    // 5️⃣ Return role to frontend
-    res.status(200).json({
-      message: 'Login successful',
-      role: user.isAdmin ? "admin" : "user",
-      user: {
-        id: user._id,
-        fullName: user.fullName,
-        email: user.email,
-      },
-    });
-
-  } catch (err) {
-    console.error("Login error:", err);
-    res.status(500).json({ message: 'Server error' });
+    res.cookie("token", token, { httpOnly: true });
+    return res.json({ message: "Admin logged in", isAdmin: true });
   }
-};
+
+  // ✅ Normal User Login (from MongoDB)
+  const user = await User.findOne({ email });
+  if (user && (await user.matchPassword(password))) {
+    const token = jwt.sign(
+      { id: user._id, isAdmin: false }, // 👈 normal user
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.cookie("token", token, { httpOnly: true });
+    return res.json({ message: "User logged in", isAdmin: false });
+  }
+
+  res.status(401).json({ message: "Invalid credentials" });
+});
 
 // POST /api/logout
 export const logout = (req, res) => {
