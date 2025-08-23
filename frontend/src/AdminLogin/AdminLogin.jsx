@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
+
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,7 +15,7 @@ export default function AdminLogin() {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:5000/api/admin/login", {
+      const res = await fetch(`${VITE_BACKEND_URL}api/admin/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
