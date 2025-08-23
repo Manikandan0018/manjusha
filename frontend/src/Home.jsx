@@ -149,7 +149,7 @@ export const Home = () => {
           </button>
 
            <button
-              onClick={() => navigate("/AdminProduct")}
+              onClick={() => navigate("/AdminLogin")}
               className="cursor-pointer text-rose-600 hover:underline hidden lg:block"
             >
               Admin
@@ -227,7 +227,7 @@ export const Home = () => {
 
           <div>
             <p
-              onClick={() => navigate("/AdminProduct")}
+              onClick={() => navigate("/AdminLogin")}
               className="cursor-pointer text-rose-600 hover:underline hidden lg:block"
             >
               Admin

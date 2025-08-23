@@ -23,6 +23,7 @@ import  {AdminOrderTrack}  from './AdminProduct/AdminOrderTrack.jsx';
 import Email from './Email/Email.jsx';
 import { FavoritesPage } from './Favourite/Favourite.jsx';
 import { AdminDashboard } from './AdminDashboard/AdminDashboard.jsx';
+import AdminLogin from './AdminLogin/AdminLogin.jsx';
 
 function App() {
   return (
@@ -44,7 +45,8 @@ function App() {
         <Route path="/AdminOrderTracking" element={<AdminOrderTrack/>} />
         <Route path="/email" element={<Email/>} />
         <Route path="/favourite" element={<FavoritesPage/>} />
-                <Route path="/adminDashboard" element={<AdminDashboard/>} />
+        <Route path="/adminDashboard" element={<AdminDashboard/>} />
+        <Route path="/adminLogin" element={<AdminLogin/>} />
       </Routes>
   );
 }
