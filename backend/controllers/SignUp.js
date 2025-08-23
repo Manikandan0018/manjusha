@@ -1,5 +1,6 @@
 import User from '../models/SignUp.js';
 import jwt from 'jsonwebtoken';
+import asyncHandler from "express-async-handler";
 
 const JWT_SECRET = process.env.JWT_SECRET || "secret123";
 
