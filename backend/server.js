@@ -22,6 +22,8 @@ import MyCartProduct from "./routes/MyCartRoute.js";
 import Profile from "./routes/Profile.js";
 import OrderTracking from "./routes/OrderRoute.js";
 
+import AdminLogin from "./routes/AdminLogin.js";
+
 dotenv.config();
 
 const app = express();
@@ -74,6 +76,8 @@ app.use("/api/email", emailRoutes);
 app.use("/api/delivery", deliveryRoutes);
 app.use("/api/favourites", favouriteRoutes);
 app.use("/api/admin", AdminDashboard);
+app.use("/api", AdminLogin);
+
 
 // ✅ Root route
 app.get("/", (req, res) => {
