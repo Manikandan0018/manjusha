@@ -33,11 +33,10 @@ const handleLogin = async (e) => {
     if (res.status === 200) {
       // 🔑 Check if credentials match admin
       if (form.email.trim() === ADMIN_NAME && form.password.trim() === ADMIN_PASSWORD) {
-  navigate('/adminProduct');
-} else {
-  navigate('/');
-}
-
+        navigate('/adminProduct');
+      } else {
+        navigate('/');
+      }
     }
   } catch (err) {
     const message =
