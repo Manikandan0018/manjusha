@@ -32,11 +32,12 @@ const handleLogin = async (e) => {
 
     if (res.status === 200) {
       // 🔑 Check if credentials match admin
-      if (form.email === ADMIN_NAME && form.password === ADMIN_PASSWORD) {
-        navigate('/adminProduct');  // redirect to admin page
-      } else {
-        navigate('/'); // normal user
-      }
+      if (form.email.trim() === ADMIN_NAME && form.password.trim() === ADMIN_PASSWORD) {
+  navigate('/adminProduct');
+} else {
+  navigate('/');
+}
+
     }
   } catch (err) {
     const message =
@@ -68,7 +69,7 @@ const handleLogin = async (e) => {
 
         {/* Email */}
         <input
-          type="email"
+          type="text"
           name="email"
           value={form.email}
           onChange={handleChange}
