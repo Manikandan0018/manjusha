@@ -4,8 +4,11 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
+
 const fetchUser = async () => {
-  const res = await axios.get("http://localhost:5000/api/me", {
+  const res = await axios.get(`${VITE_BACKEND_URL}api/me`, {
     withCredentials: true,
   });
   return res.data;
@@ -20,7 +23,7 @@ export const AdminOrderTrack = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/adminGetAllOrder", { withCredentials: true })
+      .get(`${VITE_BACKEND_URL}api/adminGetAllOrder`, { withCredentials: true })
       .then((res) => setOrders(res.data || []))
       .catch((err) => console.error("Error fetching orders:", err));
   }, []);
@@ -28,11 +31,11 @@ export const AdminOrderTrack = () => {
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/adminUpdateOrderStatus/${orderId}`,
+        `${VITE_BACKEND_URL}api/adminUpdateOrderStatus/${orderId}`,
         { orderStatus: newStatus },
         { withCredentials: true }
       );
-      const res = await axios.get("http://localhost:5000/api/adminGetAllOrder", {
+      const res = await axios.get(`${VITE_BACKEND_URL}api/adminGetAllOrder`, {
         withCredentials: true,
       });
       setOrders(res.data || []);
