@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    isAdmin: {
+      type: Boolean,
+      default: false, // normal users are false
+     },
     shippingAddress: {
       address: { type: String, default: "" },
       city: { type: String, default: "" },
