@@ -23,25 +23,27 @@ export const Address = () => {
     },
   });
 
-  useEffect(() => {
-    axios
-      .get(`${VITE_BACKEND_URL}api/me`, { withCredentials: true })
-      .then((res) => {
-        setUser(res.data);
-        setFormData({
-          name: res.data.fullName,
-          email: res.data.email,
-          shippingAddress: res.data.shippingAddress || {
-            address: "",
-            city: "",
-            state: "",
-            zip: "",
-            country: "",
-          },
-        });
-      })
-      .catch((err) => console.error("Fetch failed", err));
-  }, []);
+useEffect(() => {
+  axios
+    .get(`${VITE_BACKEND_URL}api/me`, { withCredentials: true })
+    .then((res) => {
+      const userData = res.data.user; // 👈 Extract user object
+      setUser(userData);
+      setFormData({
+        name: userData.fullName,
+        email: userData.email,
+        shippingAddress: userData.shippingAddress || {
+          address: "",
+          city: "",
+          state: "",
+          zip: "",
+          country: "",
+        },
+      });
+    })
+    .catch((err) => console.error("Fetch failed", err));
+}, []);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
