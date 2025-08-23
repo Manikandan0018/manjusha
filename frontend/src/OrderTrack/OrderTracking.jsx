@@ -207,7 +207,7 @@ export const OrderTracking = () => {
           )}
           <button
             onClick={() => {
-              navigate("/support");
+              navigate("/email");
               toggleSidebar();
             }}
             className="text-left text-rose-500"
