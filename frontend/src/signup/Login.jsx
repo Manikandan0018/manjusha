@@ -16,28 +16,37 @@ export default function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setError('');
+ const ADMIN_NAME = import.meta.env.VITE_ADMIN_NAME;
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
 
-    try {
-      const res = await axios.post(
-        `${VITE_BACKEND_URL}api/login`,
-        form,
-        { withCredentials: true } // Important for httpOnly cookie
-      );
+const handleLogin = async (e) => {
+  e.preventDefault();
+  setError('');
 
-      if (res.status === 200) {
-        navigate('/');
+  try {
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}api/login`,
+      form,
+      { withCredentials: true }
+    );
+
+    if (res.status === 200) {
+      // 🔑 Check if credentials match admin
+      if (form.email === ADMIN_NAME && form.password === ADMIN_PASSWORD) {
+        navigate('/adminProduct');  // redirect to admin page
+      } else {
+        navigate('/'); // normal user
       }
-    } catch (err) {
-      const message =
-        err.response?.data?.message ||
-        err.response?.data?.error ||
-        'Login failed';
-      setError(message);
     }
-  };
+  } catch (err) {
+    const message =
+      err.response?.data?.message ||
+      err.response?.data?.error ||
+      'Login failed';
+    setError(message);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
