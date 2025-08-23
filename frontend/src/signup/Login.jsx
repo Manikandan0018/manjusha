@@ -16,37 +16,28 @@ export default function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
- const ADMIN_NAME = import.meta.env.VITE_ADMIN_NAME;
-const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
 
-const handleLogin = async (e) => {
-  e.preventDefault();
-  setError('');
+    try {
+      const res = await axios.post(
+        `${VITE_BACKEND_URL}api/login`,
+        form,
+        { withCredentials: true } // Important for httpOnly cookie
+      );
 
-  try {
-    const res = await axios.post(
-      `${VITE_BACKEND_URL}api/login`,
-      form,
-      { withCredentials: true }
-    );
-
-    if (res.status === 200) {
-      // 🔑 Check if credentials match admin
-      if (form.email.trim() === ADMIN_NAME && form.password.trim() === ADMIN_PASSWORD) {
-        navigate('/adminProduct');
-      } else {
+      if (res.status === 200) {
         navigate('/');
       }
+    } catch (err) {
+      const message =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        'Login failed';
+      setError(message);
     }
-  } catch (err) {
-    const message =
-      err.response?.data?.message ||
-      err.response?.data?.error ||
-      'Login failed';
-    setError(message);
-  }
-};
-
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
@@ -68,7 +59,7 @@ const handleLogin = async (e) => {
 
         {/* Email */}
         <input
-          type="text"
+          type="email"
           name="email"
           value={form.email}
           onChange={handleChange}
