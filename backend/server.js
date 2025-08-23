@@ -21,6 +21,7 @@ import SignUp from "./routes/SignUp.js";
 import MyCartProduct from "./routes/MyCartRoute.js";
 import Profile from "./routes/Profile.js";
 import OrderTracking from "./routes/OrderRoute.js";
+import ProductSearch from "./routes/ProductSearch.js";
 
 import AdminLogin from "./routes/AdminLogin.js";
 
@@ -77,6 +78,8 @@ app.use("/api/delivery", deliveryRoutes);
 app.use("/api/favourites", favouriteRoutes);
 app.use("/api/admin", AdminDashboard);
 app.use("/api", AdminLogin);
+app.use("/api", AdminLogin);
+app.use("/api/products", ProductSearch);
 
 
 // ✅ Root route
