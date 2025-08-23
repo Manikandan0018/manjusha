@@ -19,8 +19,9 @@ const fetchUser = async () => {
   const res = await axios.get(`${VITE_BACKEND_URL}api/me`, {
     withCredentials: true,
   });
-  return res.data;
+  return res.data.user; // ✅ return just the user object
 };
+
 
 export const Home = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
