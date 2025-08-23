@@ -27,7 +27,7 @@ useEffect(() => {
   axios
     .get(`${VITE_BACKEND_URL}api/me`, { withCredentials: true })
     .then((res) => {
-      const userData = res.data.user; // 👈 Extract user object
+      const userData = res.data.user; // ✅ take the user object
       setUser(userData);
       setFormData({
         name: userData.fullName,
@@ -43,6 +43,7 @@ useEffect(() => {
     })
     .catch((err) => console.error("Fetch failed", err));
 }, []);
+
 
 
   const handleChange = (e) => {
