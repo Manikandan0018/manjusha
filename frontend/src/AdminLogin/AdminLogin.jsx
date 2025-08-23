@@ -32,7 +32,7 @@ export default function AdminLogin() {
       // ✅ Store admin in localStorage (or Context/Zustand)
       localStorage.setItem("user", JSON.stringify(data));
 
-      navigate("/admin/dashboard");
+      navigate("/AdminProduct");
     } catch (err) {
       setError("Something went wrong");
     }
