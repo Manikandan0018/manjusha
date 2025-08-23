@@ -89,6 +89,7 @@ export const logout = (req, res) => {
 };
 
 // GET /api/me
+// GET /api/me
 export const getMe = async (req, res) => {
   try {
     const token = req.cookies.token;
@@ -98,9 +99,11 @@ export const getMe = async (req, res) => {
     const user = await User.findById(decoded.id).select("-password -confirmPassword");
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    res.json({ user });
+    // 👇 send user object directly (not wrapped in { user })
+    res.json(user);
   } catch (err) {
     console.error("getMe error:", err);
     res.status(401).json({ message: 'Invalid token' });
   }
 };
+
