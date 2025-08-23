@@ -25,6 +25,11 @@ const userSchema = new mongoose.Schema(
       zip: { type: String, default: "" },
       country: { type: String, default: "" },
     },
+    role: {
+    type: String,
+    enum: ["user", "admin"], // ✅ can only be user or admin
+    default: "user",         // ✅ by default every signup is normal user
+  },
   },
   { 
     collection: "signups",
