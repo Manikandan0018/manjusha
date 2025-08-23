@@ -6,8 +6,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/AdminProduct";
-
 const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 console.log("Backend URL:", VITE_BACKEND_URL); // just to confirm
 
@@ -19,7 +17,7 @@ const fetchProducts = async () => {
   return data;
 };
 
-export const LaunchNew = () => {
+export const LaunchNew = ({ search = "" }) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [liked, setLiked] = useState([]); // store favourite products locally
@@ -102,10 +100,9 @@ export const LaunchNew = () => {
   // Remove favourite
   const removeFavourite = useMutation({
     mutationFn: (productId) =>
-      axios.delete(
-        `${VITE_BACKEND_URL}api/favourites/remove/${productId}`,
-        { withCredentials: true }
-      ),
+      axios.delete(`${VITE_BACKEND_URL}api/favourites/remove/${productId}`, {
+        withCredentials: true,
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries(["favourites"]);
       toast.success("Removed from favourites 💔");
@@ -130,19 +127,19 @@ export const LaunchNew = () => {
       return;
     }
 
- const payload = {
-  name: product.name,
-  price: product.price,
-  description: product.description || "",
-  image: product.image,
-  quantity: 1,
-  shippingAddress: {
-    address: user.shippingAddress?.address,
-    city: user.shippingAddress?.city,
-    state: user.shippingAddress?.state,
-    zip: user.shippingAddress?.zip,   // 👈 important for zipcodebase API
-  },
-};
+    const payload = {
+      name: product.name,
+      price: product.price,
+      description: product.description || "",
+      image: product.image,
+      quantity: 1,
+      shippingAddress: {
+        address: user.shippingAddress?.address,
+        city: user.shippingAddress?.city,
+        state: user.shippingAddress?.state,
+        zip: user.shippingAddress?.zip, // 👈 important for zipcodebase API
+      },
+    };
 
     // Prevent duplicate
     const alreadyExists = cartItems.some(
@@ -164,13 +161,22 @@ export const LaunchNew = () => {
     });
   };
 
+  // ✅ Apply search filter (case insensitive)
+  const filteredProducts = products.filter((p) =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <section className="bg-white py-10 px-6">
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {isLoading ? (
           <p className="text-center col-span-full">Loading products...</p>
+        ) : filteredProducts.length === 0 ? (
+          <p className="text-center col-span-full text-gray-500">
+            No products found.
+          </p>
         ) : (
-          products.map((product, index) => (
+          filteredProducts.map((product, index) => (
             <motion.div
               key={product._id}
               initial={{ opacity: 0, y: 40 }}
@@ -186,7 +192,9 @@ export const LaunchNew = () => {
               >
                 <FaHeart
                   className={`text-lg ${
-                    liked.some((p) => p._id === product._id) ? "fill-rose-500" : ""
+                    liked.some((p) => p._id === product._id)
+                      ? "fill-rose-500"
+                      : ""
                   }`}
                 />
               </button>
